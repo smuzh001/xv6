@@ -16,7 +16,10 @@ sys_fork(void)
 int
 sys_exit(void)
 {
-  exit();
+  int estatus;
+  if(argint(0,&estatus) < 0) //check top of stack to get status of failure stored in estatus
+	return -1;
+  exit(estatus);
   return 0;  // not reached
 }
 

@@ -224,13 +224,14 @@ fork(void)
 // Exit the current process.  Does not return.
 // An exited process remains in the zombie state
 // until its parent calls wait() to find out it exited.
-void
-exit(void)
+int
+exit(int estatus)
 {
   struct proc *curproc = myproc();
   struct proc *p;
   int fd;
-
+  curproc->status = estatus; //passed parameter
+  estatus = 0;
   if(curproc == initproc)
     panic("init exiting");
 
@@ -252,7 +253,7 @@ exit(void)
   // Parent might be sleeping in wait().
   wakeup1(curproc->parent);
 
-  // Pass abandoned children to init.
+  // Pass abandoned children to init. 
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if(p->parent == curproc){
       p->parent = initproc;
