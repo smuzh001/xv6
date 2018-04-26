@@ -26,7 +26,11 @@ sys_exit(void)
 int
 sys_wait(void)
 {
-  return wait();
+  int status;
+  if(argint(0, &status) < 0){
+    return -1;
+  }
+  return wait((int*)status);	//wait (int*) because wait takes in a pointer, you need to c type_cast it.
 }
 
 int
