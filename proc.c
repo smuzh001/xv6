@@ -315,6 +315,56 @@ wait(int* status)
   }
 }
 
+
+//waitpid functionality cs 153
+int
+waitpid(int pid, int *status, int options){
+
+  struct proc *p;
+  struct proc *curproc = myproc();
+  int pidfound = 0;
+
+  acquire(&ptable.lock);
+  for(;;){
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+//we are checking if any process matches the pid that was passed by the parameter. Different than with wait() which only checks for child process. 	
+	  if(p->pid == pid){
+	  pidfound = 1;
+//below code checks if curproc is waiting for itself, If so then we return -1 and release the lock on the process table.
+	  if(curproc->pid == pid){
+	    release(&ptable.lock);
+            return -1;  
+          }
+//zombie process if process has finished executing but memory hasnt been deallocated yet.
+          if(p->state == ZOMBIE){
+	    kfree(p->kstack);
+	    p->kstack = 0;
+	    freevm(p->pgdir);
+            p->pid = 0;
+            p->parent = 0;
+            p->name[0] = 0; 
+	    p->killed = 0;
+            p->state = UNUSED;
+            
+	    if(status != 0){
+	      *status = p->status;
+	    }
+  	    release(&ptable.lock);
+            return pid;
+	  }
+	}
+    }
+    if(!pidfound){
+	release(&ptable.lock);
+	return -1;
+    }
+    sleep(curproc, &ptable.lock);
+  }
+
+}
+
+
+
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
