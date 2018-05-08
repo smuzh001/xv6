@@ -358,9 +358,6 @@ waitpid(int pid, int *status, int options){
 	release(&ptable.lock);
 	return -1;
     }
-	if(curproc->priority > 0){//decrementing priority
-       		curproc->priority = curproc->priority - 1;
-	}
     sleep(curproc, &ptable.lock);
   }
 
@@ -409,9 +406,18 @@ scheduler(void)
     // Switch to chosen process.  It is the process's job
     // to release ptable.lock and then reacquire it
     // before jumping back to us.
-   if(temp){ 
-   c->proc = temp;
-  //  switchuvm(temp);
+   
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if (p->state != RUNNABLE)
+	continue;
+      if (p != temp) {
+	p->priority -= 1;
+      }
+    }
+
+    if(temp){ 
+    c->proc = temp;
+    //  switchuvm(temp);
     temp->state = RUNNING;
     if(temp->priority < 31)
     	temp->priority += 1;
@@ -423,6 +429,7 @@ scheduler(void)
     // It should have changed its p->state before coming back.
     c->proc = 0;
     }
+	
     release(&ptable.lock);
 	
   }
