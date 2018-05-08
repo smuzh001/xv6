@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
   
   
 int exitWait(void) {
-    int pid, ret_pid, exit_status;
+    int pid, ret_pid, exit_status=0;
     int i;
   
     // use this part to test exit(int status) and wait(int* status)
@@ -39,7 +39,7 @@ int exitWait(void) {
                 exit(-1);
             } 
         } else if (pid > 0) { // only the parent exeecutes this code
-            ret_pid = wait(&exit_status);
+            ret_pid = wait(0);
             printf(1, " - This is the parent: child with PID# %d has exited with status %d\n", ret_pid, exit_status);
         } else {  // something went wrong with fork system call
             printf(2, " - Error using fork\n");
@@ -62,7 +62,7 @@ int waitPid(void){
 	
         if (pid_a[i] == 0) { // only the child executed this code  
             printf(1, " - The is child with PID# %d and I will exit with status %d\n", getpid(), 0);
-            exit(0);
+            exit(2);
         }
     }
        
@@ -85,7 +85,7 @@ int waitPid(void){
     printf(1, " - This is the parent: Child# %d has exited with status %d\n",ret_pid, exit_status);
     sleep(5);
     printf(1, " - This is the parent: Now waiting for child with PID# %d\n",pid_a[4]);
-    ret_pid = waitpid(pid_a[4], &exit_status, 0);
+    ret_pid = waitpid(getpid(), &exit_status, 0);
     printf(1, " - This is the parent: Child# %d has exited with status %d\n",ret_pid, exit_status);
       
     return 0;

@@ -3,7 +3,7 @@ struct rtcdate;
 
 // system calls
 int fork(void);
-int exit(int status) __attribute__((noreturn));
+int exit(int status) __attribute__((noreturn)); //cs153
 int wait(int*);		//int wait(void) -> int wait(int*)
 int pipe(int*);
 int write(int, void*, int);
@@ -24,6 +24,7 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int waitpid(int, int*, int);	//added new waitpid cs153
+void setprior(int);		//added set priority call
 // ulib.c
 int stat(char*, struct stat*);
 char* strcpy(char*, char*);

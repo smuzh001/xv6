@@ -287,7 +287,7 @@ wait(int* status)
       havekids = 1;
       if(p->state == ZOMBIE){
         // Found one.
-        if(p->status != 0){	//cs 153 returns the terminated child exit status through the status argument.
+        if(status != 0){	//cs 153 returns the terminated child exit status through the status argument.
 	  *status = p->status;
 	}
         pid = p->pid;
@@ -585,4 +585,7 @@ procdump(void)
     }
     cprintf("\n");
   }
+}
+void setprior(int) {
+
 }

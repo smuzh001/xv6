@@ -117,10 +117,11 @@ void            sched(void);
 void            setproc(struct proc*);
 void            sleep(void*, struct spinlock*);
 void            userinit(void);
-int             wait(int*);
+int             wait(int*);   //added int* status parameter cs 153
 void            wakeup(void*);
 void            yield(void);
 int		waitpid(int, int*, int); //new syscall cs153
+void		setprior(int); //new set priority call
 // swtch.S
 void            swtch(struct context**, struct context*);
 
