@@ -395,7 +395,7 @@ scheduler(void)
    
     //
 
-
+    temp = 0;
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
@@ -411,11 +411,11 @@ scheduler(void)
     // before jumping back to us.
    if(temp){ 
    c->proc = temp;
-    switchuvm(temp);
+  //  switchuvm(temp);
     temp->state = RUNNING;
     if(temp->priority < 31)
     	temp->priority += 1;
-    
+    switchuvm(temp);
     swtch(&(c->scheduler), temp->context);
     switchkvm();
 
