@@ -409,6 +409,10 @@ scheduler(void)
   }
 }
 
+void setprior(int priority) {
+
+}
+
 // Enter scheduler.  Must hold only ptable.lock
 // and have changed proc->state. Saves and restores
 // intena because intena is a property of this
@@ -585,7 +589,4 @@ procdump(void)
     }
     cprintf("\n");
   }
-}
-void setprior(int) {
-
 }
