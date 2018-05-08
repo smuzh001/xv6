@@ -24,7 +24,7 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int waitpid(int, int*, int);	//added new waitpid cs153
-void setprior(int);		//added set priority call
+void setpriority(int);		//added set priority call
 // ulib.c
 int stat(char*, struct stat*);
 char* strcpy(char*, char*);

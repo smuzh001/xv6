@@ -121,7 +121,7 @@ int             wait(int*);   //added int* status parameter cs 153
 void            wakeup(void*);
 void            yield(void);
 int		waitpid(int, int*, int); //new syscall cs153
-void		setprior(int); //new set priority call
+void		setpriority(int); //new set priority call
 // swtch.S
 void            swtch(struct context**, struct context*);
 

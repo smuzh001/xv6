@@ -113,12 +113,12 @@ sys_waitpid(void){
   return waitpid(pid, (int*)status, options); //waitpid(int, int*, int);
 }
 
-int sys_setprior(void) {
+int sys_setpriority(void) {
   int priority;
   
   if(argint(0, &priority) < 0){
     return -1;
   }
-  setprior(priority);
+  setpriority(priority);
   return 0;
 }

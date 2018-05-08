@@ -409,7 +409,7 @@ scheduler(void)
   }
 }
 
-void setprior(int priority) {
+void setpriority(int priority) {
 
 }
 
