@@ -414,7 +414,7 @@ scheduler(void)
     switchuvm(temp);
     temp->state = RUNNING;
     if(temp->priority < 31)
-    	temp->priority = temp->priority + 1;
+    	temp->priority += 1;
     
     swtch(&(c->scheduler), temp->context);
     switchkvm();
@@ -429,7 +429,8 @@ scheduler(void)
 }
 
 void setpriority(int priority) {	//added for lab2test
-
+	struct proc *curproc = myproc();
+	curproc->priority = priority;
 }
 
 // Enter scheduler.  Must hold only ptable.lock
