@@ -88,7 +88,7 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
-
+  p->priority = 10;
   release(&ptable.lock);
 
   // Allocate kernel stack.
@@ -411,7 +411,9 @@ scheduler(void)
       if (p->state != RUNNABLE)
 	continue;
       if (p != temp) {
+      if(p->priority > 0){
 	p->priority -= 1;
+	}
       }
     }
 
@@ -419,7 +421,7 @@ scheduler(void)
     c->proc = temp;
     //  switchuvm(temp);
     temp->state = RUNNING;
-    if(temp->priority < 31)
+    if(temp->priority < 32)
     	temp->priority += 1;
     switchuvm(temp);
     swtch(&(c->scheduler), temp->context);
@@ -437,7 +439,12 @@ scheduler(void)
 
 void setpriority(int priority) {	//added for lab2test
 	struct proc *curproc = myproc();
+	if(priority < 32 && priority >= 0){
 	curproc->priority = priority;
+	}
+	else{
+	    return;
+	}
 }
 
 // Enter scheduler.  Must hold only ptable.lock
